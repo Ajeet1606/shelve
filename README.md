@@ -37,6 +37,7 @@ Shelve is a Chrome extension that helps you tame browser tab overload. Instead o
 <!-- Add screenshots here -->
 <!-- ![Popup](screenshots/popup.png) -->
 <!-- ![Dashboard](screenshots/dashboard.png) -->
+<img width="1036" height="584" alt="image" src="https://github.com/user-attachments/assets/cc828f73-d0b4-406c-85a9-2d59d8a3aade" />
 
 ---
 
