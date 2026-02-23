@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Shelve",
     "version": "1.0.0",
-    "description": "Declutter your browser — save, organize, and restore tabs with one click. Auto-groups by domain, full-text search, duplicate detection, and more.",
+    "description": "Declutter your browser - save, organize, and restore tabs with one click. Auto-groups, search, duplicate detection, and more.",
     "permissions": [
         "tabs",
         "storage",
