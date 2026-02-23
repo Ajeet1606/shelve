@@ -153,7 +153,7 @@ function renderGroupHTML(group) {
         <span class="group-count">${group.tabs.length} tab${group.tabs.length === 1 ? "" : "s"}</span>
         <div class="group-actions">
           <button class="group-action-btn" data-action="restore-group" data-group-id="${group.id}" title="Restore all tabs">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2v5h5M14 14V9H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.5 6.5A6 6 0 004 3L2 5m10 6l2 2A6 6 0 015 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12l3-3m0 0l3 3M6 9v6a6 6 0 006 6h3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12l-3 3m0 0l-3-3m3 3V9a6 6 0 00-6-6H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <button class="group-action-btn delete" data-action="delete-group" data-group-id="${group.id}" title="Delete group">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4L4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>

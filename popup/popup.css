@@ -156,7 +156,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 4px;
+  padding-top: 8px;
   border-top: 1px solid var(--border);
 }
 
