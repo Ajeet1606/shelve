@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shelve — Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <img src="../icons/icon32.png" alt="" width="28" height="28" />
+            <span class="logo-text">Shelve</span>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-view="tabs">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M2 3h12v2H2V3zm0 4h12v2H2V7zm0 4h8v2H2v-2z"
+                fill="currentColor"
+              />
+            </svg>
+            All Tabs
+            <span class="nav-badge" id="sidebarTabCount">0</span>
+          </button>
+          <button class="nav-item" data-view="sessions">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2a5 5 0 110 10A5 5 0 018 3zm-.5 2v3.5l2.5 1.5.5-.87-2-1.19V5H7.5z"
+                fill="currentColor"
+              />
+            </svg>
+            Sessions
+          </button>
+          <button class="nav-item" data-view="settings">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M6.5 1L6 3.05a5.5 5.5 0 00-1.57.92L2.35 3.2l-1.5 2.6 1.83 1.42a5.6 5.6 0 000 1.56L.85 10.2l1.5 2.6 2.08-.77A5.5 5.5 0 006 12.95L6.5 15h3l.5-2.05a5.5 5.5 0 001.57-.92l2.08.77 1.5-2.6-1.83-1.42a5.6 5.6 0 000-1.56l1.83-1.42-1.5-2.6-2.08.77A5.5 5.5 0 0010 3.05L9.5 1h-3zM8 5.5a2.5 2.5 0 110 5 2.5 2.5 0 010-5z"
+                fill="currentColor"
+              />
+            </svg>
+            Settings
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="btn-ghost" id="exportBtn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M8 1v9m0 0l3-3m-3 3L5 7M2 12v2h12v-2"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Export
+          </button>
+          <button class="btn-ghost" id="importBtn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path
+                d="M8 10V1m0 0L5 4m3-3l3 3M2 12v2h12v-2"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Import
+          </button>
+          <input type="file" id="importFile" accept=".json" hidden />
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main">
+        <!-- Top bar -->
+        <header class="topbar">
+          <div class="search-wrapper">
+            <svg
+              class="search-icon"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <circle
+                cx="6.5"
+                cy="6.5"
+                r="5"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+              <path
+                d="M10.5 10.5L14 14"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <input
+              type="text"
+              class="search-input"
+              id="searchInput"
+              placeholder="Search tabs by title, URL, or tag…"
+            />
+            <kbd class="search-kbd">/</kbd>
+          </div>
+
+          <div class="topbar-actions">
+            <button class="btn btn-primary btn-sm" id="shelveAllBtn">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M8 1v14M1 8h14"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Shelve All Tabs
+            </button>
+          </div>
+        </header>
+
+        <!-- Tabs View -->
+        <section class="view view-tabs active" id="viewTabs">
+          <!-- Empty state -->
+          <div class="empty-state" id="emptyState" hidden>
+            <div class="empty-icon">📚</div>
+            <h2>No tabs shelved yet</h2>
+            <p>
+              Click "Shelve All Tabs" or use <kbd>⌘⇧S</kbd> to save your open
+              tabs.
+            </p>
+          </div>
+
+          <!-- Search results -->
+          <div class="search-results" id="searchResults" hidden>
+            <div class="section-header">
+              <h2 class="section-title" id="searchResultsTitle">Results</h2>
+              <button class="btn-ghost btn-sm" id="clearSearch">Clear</button>
+            </div>
+            <div class="tab-list" id="searchResultsList"></div>
+          </div>
+
+          <!-- Groups -->
+          <div class="groups-container" id="groupsContainer"></div>
+        </section>
+
+        <!-- Sessions View -->
+        <section class="view view-sessions" id="viewSessions" hidden>
+          <div class="section-header">
+            <h2 class="section-title">Session History</h2>
+          </div>
+          <div class="sessions-list" id="sessionsList"></div>
+        </section>
+
+        <!-- Settings View -->
+        <section class="view view-settings" id="viewSettings" hidden>
+          <div class="section-header">
+            <h2 class="section-title">Settings</h2>
+          </div>
+          <div class="settings-content">
+            <div class="setting-row">
+              <div>
+                <label class="setting-label">Theme</label>
+                <p class="setting-desc">
+                  Choose light, dark, or follow your system.
+                </p>
+              </div>
+              <select id="themeSelect" class="setting-select">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <label class="setting-label">Keyboard Shortcuts</label>
+                <p class="setting-desc">
+                  Customize at <code>chrome://extensions/shortcuts</code>
+                </p>
+              </div>
+              <div class="shortcuts-table">
+                <div class="shortcut-line">
+                  <kbd>⌘⇧S</kbd> <span>Shelve all tabs</span>
+                </div>
+                <div class="shortcut-line">
+                  <kbd>⌘⇧X</kbd> <span>Shelve current tab</span>
+                </div>
+                <div class="shortcut-line">
+                  <kbd>/</kbd> <span>Focus search</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <label class="setting-label">Data</label>
+                <p class="setting-desc">
+                  Export or import your shelved tabs as JSON.
+                </p>
+              </div>
+              <div class="setting-actions">
+                <button class="btn btn-secondary btn-sm" id="settingsExportBtn">
+                  Export JSON
+                </button>
+                <button class="btn btn-secondary btn-sm" id="settingsImportBtn">
+                  Import JSON
+                </button>
+              </div>
+            </div>
+
+            <div class="setting-row setting-row-danger">
+              <div>
+                <label class="setting-label">Danger Zone</label>
+                <p class="setting-desc">Permanently delete all shelved tabs.</p>
+              </div>
+              <button class="btn btn-danger btn-sm" id="clearAllBtn">
+                Delete All Data
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" hidden></div>
+
+    <script src="../utils/constants.js"></script>
+    <script src="../utils/storage.js"></script>
+    <script src="../utils/grouping.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>
