@@ -40,7 +40,7 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 
   // Initialize storage if first install
-  chrome.storage.local.get(["groups"], (data) => {
+  chrome.storage.local.get(["groups", "settings"], (data) => {
     if (!data.groups) {
       chrome.storage.local.set({
         groups: [],
