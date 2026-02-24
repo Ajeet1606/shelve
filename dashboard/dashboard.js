@@ -226,6 +226,49 @@ function renderSessionsView() {
 function renderSettingsView() {
   const themeSelect = $("#themeSelect");
   if (themeSelect) themeSelect.value = settings.theme;
+
+  const restoreActionSelect = $("#restoreActionSelect");
+  if (restoreActionSelect) {
+    restoreActionSelect.value = settings.removeAfterRestore === false ? "keep" : "remove";
+  }
+}
+
+/* ========== Preference Modal ========== */
+
+const preferenceModal = $("#preferenceModal");
+let preferenceResolve = null;
+
+/**
+ * Returns the removeAfterRestore preference.
+ * If not yet set, shows a first-time modal and waits for the user's choice.
+ */
+async function getRestorePreference() {
+  if (typeof settings.removeAfterRestore === "boolean") {
+    return settings.removeAfterRestore;
+  }
+  // Show modal and wait for choice
+  return new Promise((resolve) => {
+    preferenceResolve = resolve;
+    preferenceModal.hidden = false;
+  });
+}
+
+$("#prefRemove").addEventListener("click", async () => {
+  await saveRestorePreference(true);
+});
+
+$("#prefKeep").addEventListener("click", async () => {
+  await saveRestorePreference(false);
+});
+
+async function saveRestorePreference(removeAfterRestore) {
+  settings.removeAfterRestore = removeAfterRestore;
+  await chrome.storage.local.set({ settings });
+  preferenceModal.hidden = true;
+  if (preferenceResolve) {
+    preferenceResolve(removeAfterRestore);
+    preferenceResolve = null;
+  }
 }
 
 /* ========== Event listeners ========== */
@@ -305,6 +348,12 @@ function setupEventListeners() {
     applyTheme();
   });
 
+  // Restore action preference
+  $("#restoreActionSelect")?.addEventListener("change", async (e) => {
+    settings.removeAfterRestore = e.target.value === "remove";
+    await chrome.storage.local.set({ settings });
+  });
+
   // Clear all
   $("#clearAllBtn")?.addEventListener("click", async () => {
     if (
@@ -337,14 +386,15 @@ async function handleDelegatedClick(e) {
       e.preventDefault();
       const tab = findTab(groupId, tabId);
       if (tab) {
+        const removeAfterRestore = await getRestorePreference();
         await chrome.runtime.sendMessage({
           type: "RESTORE_TAB",
           url: tab.url,
           groupId,
           tabId,
-          removeAfterRestore: true,
+          removeAfterRestore,
         });
-        showToast("Tab restored");
+        showToast(removeAfterRestore ? "Tab restored" : "Tab opened");
       }
       break;
     }
@@ -358,12 +408,13 @@ async function handleDelegatedClick(e) {
 
     case "restore-group": {
       e.stopPropagation();
+      const removeAfterRestore = await getRestorePreference();
       await chrome.runtime.sendMessage({
         type: "RESTORE_GROUP",
         groupId,
-        removeAfterRestore: true,
+        removeAfterRestore,
       });
-      showToast("Group restored");
+      showToast(removeAfterRestore ? "Group restored" : "Group opened");
       break;
     }
 

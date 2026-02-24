@@ -182,6 +182,19 @@
 
             <div class="setting-row">
               <div>
+                <label class="setting-label">After Opening Tabs</label>
+                <p class="setting-desc">
+                  Choose whether to remove or keep shelved tabs after opening them.
+                </p>
+              </div>
+              <select id="restoreActionSelect" class="setting-select">
+                <option value="remove">Remove opened tabs</option>
+                <option value="keep">Keep opened tabs</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <div>
                 <label class="setting-label">Keyboard Shortcuts</label>
                 <p class="setting-desc">
                   Customize at <code>chrome://extensions/shortcuts</code>
@@ -229,6 +242,19 @@
           </div>
         </section>
       </main>
+    </div>
+
+    <!-- Preference Modal (first-time prompt) -->
+    <div class="modal-overlay" id="preferenceModal" role="dialog" aria-labelledby="preferenceModalTitle" aria-describedby="preferenceModalDesc" hidden>
+      <div class="modal">
+        <h2 class="modal-title" id="preferenceModalTitle">What should happen after opening a tab?</h2>
+        <p class="modal-desc" id="preferenceModalDesc">Choose whether shelved tabs should be removed or kept after you open them.</p>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="prefRemove">Remove opened tabs</button>
+          <button class="btn btn-secondary" id="prefKeep">Keep opened tabs</button>
+        </div>
+        <p class="modal-hint">You can change this later in Settings.</p>
+      </div>
     </div>
 
     <!-- Toast -->
