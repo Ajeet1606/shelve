@@ -24,7 +24,7 @@ async function loadStats() {
     if (response.lastSession) {
       const ago = timeAgo(response.lastSession.savedAt);
       recentEl.querySelector(".recent-text").textContent =
-        `Last shelved ${response.lastSession.tabCount} tab${response.lastSession.tabCount === 1 ? "" : "s"} — ${ago}`;
+        `Last stowed ${response.lastSession.tabCount} tab${response.lastSession.tabCount === 1 ? "" : "s"} — ${ago}`;
     }
   }
 }
@@ -32,14 +32,14 @@ async function loadStats() {
 /* ---------- Shelve all tabs ---------- */
 shelveAllBtn.addEventListener("click", async () => {
   shelveAllBtn.disabled = true;
-  shelveAllBtn.textContent = "Shelving…";
+  shelveAllBtn.textContent = "Summoning…";
 
   const result = await chrome.runtime.sendMessage({ type: "SAVE_ALL_TABS" });
 
   if (result) {
-    let msg = `Shelved ${result.saved} tab${result.saved === 1 ? "" : "s"}`;
+    let msg = `Mischief managed! ${result.saved} tab${result.saved === 1 ? "" : "s"} stowed`;
     if (result.duplicates > 0) {
-      msg += ` (${result.duplicates} duplicate${result.duplicates === 1 ? "" : "s"} skipped)`;
+      msg += ` (${result.duplicates} already shelved)`;
     }
     showToast(msg);
     await loadStats();
@@ -50,7 +50,7 @@ shelveAllBtn.addEventListener("click", async () => {
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
       <path d="M2 3h12v2H2V3zm0 4h12v2H2V7zm0 4h8v2H2v-2z" fill="currentColor"/>
     </svg>
-    Shelve All Tabs`;
+    Accio All Tabs`;
 });
 
 /* ---------- Shelve current tab ---------- */
@@ -61,11 +61,11 @@ shelveCurrentBtn.addEventListener("click", async () => {
 
   if (result) {
     if (result.duplicates > 0) {
-      showToast("Tab already shelved");
+      showToast("Already in the library");
     } else if (result.saved > 0) {
-      showToast("Tab shelved!");
+      showToast("Mischief managed!");
     } else {
-      showToast("Nothing to shelve");
+      showToast("Nothing to conjure");
     }
     await loadStats();
   }

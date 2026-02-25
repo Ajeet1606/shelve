@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shelve — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="dashboard.css" />
   </head>
   <body>
@@ -44,7 +47,7 @@
                 fill="currentColor"
               />
             </svg>
-            Settings
+            Room of Requirement
           </button>
         </nav>
 
@@ -107,7 +110,7 @@
               type="text"
               class="search-input"
               id="searchInput"
-              placeholder="Search tabs by title, URL, or tag…"
+              placeholder="Revelio…"
             />
             <kbd class="search-kbd">/</kbd>
           </div>
@@ -122,7 +125,7 @@
                   stroke-linecap="round"
                 />
               </svg>
-              Shelve All Tabs
+              Accio All Tabs
             </button>
           </div>
         </header>
@@ -131,10 +134,10 @@
         <section class="view view-tabs active" id="viewTabs">
           <!-- Empty state -->
           <div class="empty-state" id="emptyState" hidden>
-            <div class="empty-icon">📚</div>
-            <h2>No tabs shelved yet</h2>
+            <div class="empty-icon">🧙</div>
+            <h2>The shelves are empty, young wizard…</h2>
             <p>
-              Click "Shelve All Tabs" or use <kbd>⌘⇧S</kbd> to save your open
+              Click “Accio All Tabs” or use <kbd>⌘⇧S</kbd> to save your open
               tabs.
             </p>
           </div>
@@ -155,7 +158,7 @@
         <!-- Sessions View -->
         <section class="view view-sessions" id="viewSessions" hidden>
           <div class="section-header">
-            <h2 class="section-title">Session History</h2>
+            <h2 class="section-title">Pensieve</h2>
           </div>
           <div class="sessions-list" id="sessionsList"></div>
         </section>
@@ -163,12 +166,12 @@
         <!-- Settings View -->
         <section class="view view-settings" id="viewSettings" hidden>
           <div class="section-header">
-            <h2 class="section-title">Settings</h2>
+            <h2 class="section-title">Room of Requirement</h2>
           </div>
           <div class="settings-content">
             <div class="setting-row">
               <div>
-                <label class="setting-label">Theme</label>
+                <label class="setting-label">Appearance</label>
                 <p class="setting-desc">
                   Choose light, dark, or follow your system.
                 </p>
@@ -182,14 +185,14 @@
 
             <div class="setting-row">
               <div>
-                <label class="setting-label">After Opening Tabs</label>
+                <label class="setting-label">Summoning Preferences</label>
                 <p class="setting-desc">
-                  Choose whether to remove or keep shelved tabs after opening them.
+                  Choose whether to remove or keep shelved tabs after summoning them.
                 </p>
               </div>
               <select id="restoreActionSelect" class="setting-select">
-                <option value="remove">Remove opened tabs</option>
-                <option value="keep">Keep opened tabs</option>
+                <option value="remove">Vanish after summoning</option>
+                <option value="keep">Keep in the library</option>
               </select>
             </div>
 
@@ -202,10 +205,10 @@
               </div>
               <div class="shortcuts-table">
                 <div class="shortcut-line">
-                  <kbd>⌘⇧S</kbd> <span>Shelve all tabs</span>
+                  <kbd>⌘⇧S</kbd> <span>Accio all tabs</span>
                 </div>
                 <div class="shortcut-line">
-                  <kbd>⌘⇧X</kbd> <span>Shelve current tab</span>
+                  <kbd>⌘⇧X</kbd> <span>Wingardium current tab</span>
                 </div>
                 <div class="shortcut-line">
                   <kbd>/</kbd> <span>Focus search</span>
@@ -215,28 +218,28 @@
 
             <div class="setting-row">
               <div>
-                <label class="setting-label">Data</label>
+                <label class="setting-label">Owl Post</label>
                 <p class="setting-desc">
-                  Export or import your shelved tabs as JSON.
+                  Send or receive your shelved tabs as JSON via owl.
                 </p>
               </div>
               <div class="setting-actions">
                 <button class="btn btn-secondary btn-sm" id="settingsExportBtn">
-                  Export JSON
+                  Send by Owl
                 </button>
                 <button class="btn btn-secondary btn-sm" id="settingsImportBtn">
-                  Import JSON
+                  Receive Owl
                 </button>
               </div>
             </div>
 
             <div class="setting-row setting-row-danger">
               <div>
-                <label class="setting-label">Danger Zone</label>
-                <p class="setting-desc">Permanently delete all shelved tabs.</p>
+                <label class="setting-label">Forbidden Section</label>
+                <p class="setting-desc">Permanently obliviate all shelved tabs.</p>
               </div>
               <button class="btn btn-danger btn-sm" id="clearAllBtn">
-                Delete All Data
+                Obliviate All
               </button>
             </div>
           </div>
@@ -247,13 +250,13 @@
     <!-- Preference Modal (first-time prompt) -->
     <div class="modal-overlay" id="preferenceModal" role="dialog" aria-labelledby="preferenceModalTitle" aria-describedby="preferenceModalDesc" hidden>
       <div class="modal">
-        <h2 class="modal-title" id="preferenceModalTitle">What should happen after opening a tab?</h2>
-        <p class="modal-desc" id="preferenceModalDesc">Choose whether shelved tabs should be removed or kept after you open them.</p>
+        <h2 class="modal-title" id="preferenceModalTitle">Summoning Charm</h2>
+        <p class="modal-desc" id="preferenceModalDesc">Choose whether shelved tabs should vanish or remain after you summon them.</p>
         <div class="modal-actions">
-          <button class="btn btn-primary" id="prefRemove">Remove opened tabs</button>
-          <button class="btn btn-secondary" id="prefKeep">Keep opened tabs</button>
+          <button class="btn btn-primary" id="prefRemove">Vanish after summoning</button>
+          <button class="btn btn-secondary" id="prefKeep">Keep in the library</button>
         </div>
-        <p class="modal-hint">You can change this later in Settings.</p>
+        <p class="modal-hint">You can change this later in the Room of Requirement.</p>
       </div>
     </div>
 

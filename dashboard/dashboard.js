@@ -201,9 +201,9 @@ function renderSessionsView() {
   if (sessions.length === 0) {
     sessionsList.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">🕐</div>
-        <h2>No sessions yet</h2>
-        <p>Sessions are recorded each time you shelve tabs.</p>
+        <div class="empty-icon">�</div>
+        <h2>No memories yet</h2>
+        <p>Memories are recorded each time you shelve tabs.</p>
       </div>`;
     return;
   }
@@ -215,7 +215,7 @@ function renderSessionsView() {
       <span class="session-dot"></span>
       <div class="session-info">
         <div class="session-date">${formatDate(session.savedAt)}</div>
-        <div class="session-count">${session.tabCount} tab${session.tabCount === 1 ? "" : "s"} shelved</div>
+        <div class="session-count">${session.tabCount} tab${session.tabCount === 1 ? "" : "s"} stowed</div>
       </div>
     </div>
   `,
@@ -322,8 +322,9 @@ function setupEventListeners() {
   $("#shelveAllBtn").addEventListener("click", async () => {
     const result = await chrome.runtime.sendMessage({ type: "SAVE_ALL_TABS" });
     if (result) {
-      let msg = `Shelved ${result.saved} tab${result.saved === 1 ? "" : "s"}`;
-      if (result.duplicates > 0) msg += ` (${result.duplicates} skipped)`;
+      let msg = `Mischief managed! ${result.saved} tab${result.saved === 1 ? "" : "s"} stowed`;
+      if (result.duplicates > 0)
+        msg += ` (${result.duplicates} already shelved)`;
       showToast(msg);
     }
   });
@@ -356,14 +357,10 @@ function setupEventListeners() {
 
   // Clear all
   $("#clearAllBtn")?.addEventListener("click", async () => {
-    if (
-      !confirm(
-        "Are you sure you want to delete ALL shelved tabs? This cannot be undone.",
-      )
-    )
+    if (!confirm("Cast Obliviate on ALL memories? This cannot be undone."))
       return;
     await chrome.storage.local.set({ groups: [], sessions: [] });
-    showToast("All data deleted");
+    showToast("Memory… erased.");
   });
 }
 
@@ -394,14 +391,14 @@ async function handleDelegatedClick(e) {
           tabId,
           removeAfterRestore,
         });
-        showToast(removeAfterRestore ? "Tab restored" : "Tab opened");
+        showToast(removeAfterRestore ? "Tab summoned!" : "Tab conjured!");
       }
       break;
     }
 
     case "delete-tab": {
       await ShelveStorage.removeTab(groupId, tabId);
-      showToast("Tab deleted");
+      showToast("Obliviated!");
       // Storage listener will re-render
       break;
     }
@@ -414,7 +411,7 @@ async function handleDelegatedClick(e) {
         groupId,
         removeAfterRestore,
       });
-      showToast(removeAfterRestore ? "Group restored" : "Group opened");
+      showToast(removeAfterRestore ? "Tabs summoned!" : "Tabs conjured!");
       break;
     }
 
@@ -423,10 +420,12 @@ async function handleDelegatedClick(e) {
       const group = groups.find((g) => g.id === groupId);
       if (
         group &&
-        confirm(`Delete "${group.name}" and its ${group.tabs.length} tab(s)?`)
+        confirm(
+          `Cast Obliviate on "${group.name}" and its ${group.tabs.length} tab(s)?`,
+        )
       ) {
         await ShelveStorage.deleteGroup(groupId);
-        showToast("Group deleted");
+        showToast("Obliviated!");
       }
       break;
     }
@@ -444,7 +443,7 @@ async function handleExport() {
   a.download = `shelve-export-${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  showToast("Data exported");
+  showToast("Owl dispatched!");
 }
 
 async function handleImport(e) {
@@ -454,9 +453,9 @@ async function handleImport(e) {
   try {
     const text = await file.text();
     await ShelveStorage.importData(text, "merge");
-    showToast("Data imported successfully");
+    showToast("Owl received! Data imported");
   } catch (err) {
-    showToast("Import failed: " + err.message);
+    showToast("Dark magic detected: " + err.message);
   }
 
   // Reset input

@@ -1,33 +1,41 @@
 /* =========================================
-   Shelve — Popup Styles
+   Shelve — Popup Styles  (Wizarding Edition)
    ========================================= */
 
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
 :root {
-  --bg: #ffffff;
-  --bg-secondary: #f9fafb;
-  --text: #111827;
-  --text-secondary: #6b7280;
-  --border: #e5e7eb;
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-  --primary-text: #ffffff;
-  --secondary: #f3f4f6;
-  --secondary-hover: #e5e7eb;
-  --success: #10b981;
+  --bg: #F4E8C1;
+  --bg-secondary: #EBD9A7;
+  --text: #3B2314;
+  --text-secondary: #6B4C3B;
+  --border: #C7A97B;
+  --primary: #740001;
+  --primary-hover: #5A0001;
+  --primary-text: #F4E8C1;
+  --secondary: #E8D5A3;
+  --secondary-hover: #D4BE85;
+  --accent: #C5A33C;
+  --success: #2D6A4F;
   --radius: 10px;
   --radius-sm: 6px;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow: 0 2px 8px rgba(59, 35, 20, 0.15);
+  --font-display: 'Cinzel', serif;
+  --font-body: 'Crimson Text', Georgia, serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1f2937;
-    --bg-secondary: #111827;
-    --text: #f9fafb;
-    --text-secondary: #9ca3af;
-    --border: #374151;
-    --secondary: #374151;
-    --secondary-hover: #4b5563;
+    --bg: #1A0F0A;
+    --bg-secondary: #2A1810;
+    --text: #E8D5A3;
+    --text-secondary: #A08060;
+    --border: #4A3020;
+    --primary: #8B0000;
+    --primary-hover: #6B0000;
+    --secondary: #2A1810;
+    --secondary-hover: #3A2820;
+    --accent: #C5A33C;
   }
 }
 
@@ -39,19 +47,32 @@
 
 body {
   width: 320px;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: 14px;
   background: var(--bg);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(197, 163, 60, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(116, 0, 1, 0.05) 0%, transparent 50%);
   color: var(--text);
 }
 
 .popup {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
+  gap: 14px;
+  padding: 18px;
+  position: relative;
+}
+
+.popup::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.6;
 }
 
 /* ---------- Header ---------- */
@@ -73,23 +94,27 @@ body {
 }
 
 .logo-text {
-  font-size: 16px;
+  font-family: var(--font-display);
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.05em;
+  color: var(--text);
 }
 
 .tab-count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 28px;
+  min-width: 30px;
+  height: 30px;
   padding: 0 8px;
-  background: var(--primary);
-  color: var(--primary-text);
+  background: linear-gradient(135deg, var(--accent), #9A7D2E);
+  color: var(--bg);
+  font-family: var(--font-display);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 999px;
+  box-shadow: 0 1px 4px rgba(197, 163, 60, 0.4);
 }
 
 /* ---------- Buttons ---------- */
@@ -105,14 +130,17 @@ body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 11px 16px;
   border: none;
   border-radius: var(--radius);
-  font-size: 14px;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 .btn:active {
@@ -120,16 +148,20 @@ body {
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), #5A0001);
   color: var(--primary-text);
+  border: 1px solid rgba(197, 163, 60, 0.3);
+  box-shadow: 0 2px 8px rgba(116, 0, 1, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 .btn-primary:hover {
-  background: var(--primary-hover);
+  background: linear-gradient(135deg, var(--primary-hover), #4A0001);
+  box-shadow: 0 3px 12px rgba(116, 0, 1, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .btn-secondary {
   background: var(--secondary);
   color: var(--text);
+  border: 1px solid var(--border);
 }
 .btn-secondary:hover {
   background: var(--secondary-hover);
@@ -138,16 +170,18 @@ body {
 /* ---------- Recent ---------- */
 
 .recent {
-  padding: 10px 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-sm);
   background: var(--bg-secondary);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
 }
 
 .recent-text {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: 1.5;
+  font-style: italic;
 }
 
 /* ---------- Footer ---------- */
@@ -156,7 +190,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 8px;
+  padding-top: 10px;
   border-top: 1px solid var(--border);
 }
 
@@ -164,23 +198,27 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   color: var(--primary);
   text-decoration: none;
-  transition: opacity 0.15s;
+  text-transform: uppercase;
+  transition: color 0.15s;
 }
 .dashboard-link:hover {
-  opacity: 0.8;
+  color: var(--accent);
 }
 
 .shortcut-hint {
-  font-size: 11px;
+  font-family: var(--font-display);
+  font-size: 10px;
   color: var(--text-secondary);
-  padding: 2px 6px;
+  padding: 3px 8px;
   background: var(--secondary);
+  border: 1px solid var(--border);
   border-radius: 4px;
-  font-family: monospace;
 }
 
 /* ---------- Toast ---------- */
@@ -190,14 +228,16 @@ body {
   bottom: 12px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  padding: 8px 16px;
+  padding: 8px 18px;
   background: var(--text);
   color: var(--bg);
   border-radius: var(--radius-sm);
+  font-family: var(--font-body);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
+  font-style: italic;
   opacity: 0;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
   pointer-events: none;
   white-space: nowrap;
 }
